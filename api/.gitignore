@@ -1,0 +1,9 @@
+node_modules
+dist
+.env
+*.log
+
+# Jest files
+!**/*config.js
+**/coverage
+**/jest-junit.xml
