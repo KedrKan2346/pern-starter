@@ -12,9 +12,10 @@ export default defineConfig(() => {
         "@": path.resolve(__dirname, "./src"),
         "@shared-layouts": path.resolve(
           __dirname,
-          "./src/features/shared/layouts"
+          "./src/features/shared/layouts/index"
         ),
         "@features": path.resolve(__dirname, "./src/features"),
+        "@config": path.resolve(__dirname, "./src/shared/config"),
       },
     },
     plugins: [reactSWC(), UnoCSS()],

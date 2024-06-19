@@ -22,8 +22,9 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
-      "@shared-layouts/*": ["src/features/shared/layouts/*"],
-      "@features/*": ["src/features/*"]
+      "@shared-layouts": ["src/features/shared/layouts/index"],
+      "@features/*": ["src/features/*"],
+      "@config": ["src/shared/config"]
     }
   },
   "include": ["src"],

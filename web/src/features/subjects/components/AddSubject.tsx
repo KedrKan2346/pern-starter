@@ -1,4 +1,4 @@
-import { RootLayout, WithNavigationLayout } from "@shared-layouts/index";
+import { RootLayout, WithNavigationLayout } from "@shared-layouts";
 
 export function AddSubject() {
   return (
