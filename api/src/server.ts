@@ -1,4 +1,5 @@
-import express, { Express, Router } from 'express';
+import express, { Router } from 'express';
+import cors from 'cors';
 import { Logger } from 'winston';
 import { DataSource } from 'typeorm';
 import { Server } from 'http';
@@ -38,6 +39,8 @@ export function createServer(config: ServiceConfiguration, logger: Logger, dataS
   }
 
   const app = express();
+
+  app.use(cors());
 
   app.use(express.json());
 
