@@ -1,6 +1,6 @@
 {
-  "name": "express-postgres-rest-api",
-  "version": "1.0.0",
+  "name": "@pern-starter/api",
+  "version": "0.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {

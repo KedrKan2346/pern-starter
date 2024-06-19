@@ -5,6 +5,9 @@ services:
     build:
       context: "web"
       dockerfile: Dockerfile
+    environment:
+      WEB_SERVER_PORT: ${WEB_SERVER_PORT}
+      WEB_API_URL: ${WEB_API_URL}
     ports:
       - ${WEB_SERVER_PORT}:${WEB_SERVER_PORT}
     networks:

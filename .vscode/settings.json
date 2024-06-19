@@ -1,5 +1,5 @@
 {
-  "cSpell.words": ["postgre", "timestamptz", "typeorm"],
+  "cSpell.words": ["pern", "postgre", "timestamptz", "typeorm"],
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode"
 }
