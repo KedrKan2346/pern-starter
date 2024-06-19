@@ -1,3 +1,5 @@
+import { DateTime } from "luxon";
+
 /**
  * Check if value is numeric (int or decimal).
  * @param value Value of any type which is supposed to be valid number.
@@ -19,4 +21,16 @@ export function tryGetNumericValue(value: string): number | undefined {
   } catch {
     return;
   }
+}
+
+/**
+ * Return date string formatted as MMM dd, yyyy.
+ * @param dateString String date representation in ISO format.
+ * @returns String date in "MMM dd, yyyy" format.
+ */
+export function formatDateAsShort(dateString: string) {
+  // TechDebt: Read timezone from user settings.
+  return DateTime.fromISO(dateString)
+    .setZone("America/New_York")
+    .toFormat("MMM dd, yyyy");
 }

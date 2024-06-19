@@ -10,12 +10,15 @@
     "preview": "dotenv -e ../.env -- vite preview"
   },
   "dependencies": {
+    "@mantine/core": "^7.10.2",
+    "luxon": "^3.4.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.23.1"
   },
   "devDependencies": {
+    "@types/luxon": "^3.4.2",
     "@types/node": "^20.14.5",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",

@@ -1,5 +1,3 @@
-import { tryGetNumericValue } from "./utils";
-
 /**
  * Get required process env value and throws exception if value does not exist.
  * @param envParamName Env parameter name.
@@ -19,7 +17,6 @@ export function getEnvValueOrThrow(envParamName: string): string {
  * Declaration of service parameters which are passed via process env variables.
  */
 export interface ServiceConfiguration {
-  webServerPort?: number;
   webApiUrl: string;
 }
 
@@ -30,6 +27,5 @@ export interface ServiceConfiguration {
 export function getServiceConfiguration(): ServiceConfiguration {
   return {
     webApiUrl: getEnvValueOrThrow("WEB_API_URL"),
-    webServerPort: tryGetNumericValue(getEnvValueOrThrow("WEB_SERVER_PORT")),
   };
 }

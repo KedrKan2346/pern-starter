@@ -1,0 +1,30 @@
+.navMenu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  > li {
+    display: inline-block;
+    margin-right: 20px;
+  }
+}
+
+.menuLink {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.menuBar {
+  width: 100%;
+  background-color: #333030;
+  height: 60px;
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

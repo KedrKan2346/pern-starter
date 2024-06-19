@@ -1,12 +1,16 @@
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv } from "vite";
 import path from "path";
 import UnoCSS from "unocss/vite";
 import reactSWC from "@vitejs/plugin-react-swc";
 
 // https://vitejs.dev/config/
-export default defineConfig(() => {
+export default defineConfig(({ mode }) => {
   const webServerPortEnv = process.env["WEB_SERVER_PORT"];
+  const env = loadEnv(mode, process.cwd(), "");
   return {
+    define: {
+      "process.env.WEB_API_URL": JSON.stringify(env.WEB_API_URL),
+    },
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "./src"),

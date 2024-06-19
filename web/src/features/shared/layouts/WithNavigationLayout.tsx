@@ -1,5 +1,6 @@
 import { ReactElement, ReactNode } from "react";
 import { Link } from "react-router-dom";
+import styles from "./with-navigation-layout.module.css";
 
 interface WithNavigationLayoutProps {
   children: ReactNode;
@@ -10,16 +11,22 @@ export function WithNavigationLayout({
 }: WithNavigationLayoutProps): ReactElement {
   return (
     <div>
-      <nav>
-        <ul>
+      <nav className={styles.menuBar}>
+        <ul className={styles.navMenu}>
           <li>
-            <Link to="/">Subjects</Link>
+            <Link className={styles.menuLink} to="/">
+              Home
+            </Link>
           </li>
           <li>
-            <Link to="/add">Add</Link>
+            <Link className={styles.menuLink} to="/add">
+              Add
+            </Link>
           </li>
           <li>
-            <Link to="/edit">Edit</Link>
+            <Link className={styles.menuLink} to="/edit">
+              Edit
+            </Link>
           </li>
         </ul>
       </nav>
