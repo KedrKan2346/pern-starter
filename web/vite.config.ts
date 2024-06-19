@@ -1,11 +1,12 @@
 import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react-swc";
+import UnoCSS from "unocss/vite";
+import reactSWC from "@vitejs/plugin-react-swc";
 
 // https://vitejs.dev/config/
 export default defineConfig(() => {
   const webServerPortEnv = process.env["WEB_SERVER_PORT"];
   return {
-    plugins: [react()],
+    plugins: [reactSWC(), UnoCSS()],
     preview: {
       // TechDebt: Solve import from external folder TS config issue.
       port: webServerPortEnv ? parseInt(webServerPortEnv) : undefined,
