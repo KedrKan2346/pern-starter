@@ -5,6 +5,7 @@
     "mantine",
     "pern",
     "postgre",
+    "tabler",
     "timestamptz",
     "typeorm",
     "unocss",

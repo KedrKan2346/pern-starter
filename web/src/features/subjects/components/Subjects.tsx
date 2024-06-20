@@ -1,4 +1,4 @@
-import { Table, LoadingOverlay } from '@mantine/core';
+import { Table, LoadingOverlay, Title, Center } from '@mantine/core';
 import { ReactElement } from 'react';
 import { RootLayout, WithNavigationLayout } from '@shared-layouts';
 import { useSubjects } from '../hooks/use-subjects';
@@ -38,11 +38,12 @@ export function Subjects(): ReactElement {
   return (
     <RootLayout>
       <WithNavigationLayout>
-        <div>
-          <LoadingOverlay visible={isLoading} zIndex={1000} overlayProps={{ radius: 'sm', blur: 2 }} />
-          {!isLoading && hasError && <div>Request Failed</div>}
-          {!isLoading && !hasError && <SubjectItemsTable subjectItems={entities} />}
-        </div>
+        <Center>
+          <Title order={2}>Subjects</Title>
+        </Center>
+        <LoadingOverlay visible={isLoading} zIndex={1000} overlayProps={{ radius: 'sm', blur: 2 }} />
+        {!isLoading && hasError && <div>Request Failed</div>}
+        {!isLoading && !hasError && <SubjectItemsTable subjectItems={entities} />}
       </WithNavigationLayout>
     </RootLayout>
   );

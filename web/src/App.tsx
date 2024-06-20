@@ -5,6 +5,7 @@ import { NoMatchLayout } from '@features/shared/layouts';
 import { Subjects, AddSubject, EditSubject } from '@features/subjects';
 import { MantineProvider } from '@mantine/core';
 import '@mantine/core/styles.css';
+import '@mantine/dates/styles.css';
 
 export function App() {
   const queryClient = new QueryClient();

@@ -28,7 +28,7 @@ export function WithNavigationLayout({ children }: WithNavigationLayoutProps): R
           </li>
         </ul>
       </nav>
-      <div className={styles.content}>{children}</div>
+      {children}
     </div>
   );
 }
