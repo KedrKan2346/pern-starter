@@ -5,6 +5,7 @@
     "mantine",
     "pern",
     "postgre",
+    "sortorder",
     "tabler",
     "timestamptz",
     "typeorm",

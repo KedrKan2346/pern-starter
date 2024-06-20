@@ -1,7 +1,7 @@
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, FindOptionsOrderValue, Repository } from 'typeorm';
 import { Logger } from 'winston';
 import { CreateOrUpdateSubjectRequestDto, SubjectDto, SexDto, SubjectStatusDto } from '../../domain/dto';
-import { SubjectPersistence } from '../../domain/persistence';
+import { SortableColumns, SubjectPersistence, isSortableColumn } from '../../domain/persistence';
 import {} from '../../domain/subject-domain-entity';
 import { TypeOrmSubjectPersistence } from './type-orm-subject-persistence';
 
@@ -26,17 +26,6 @@ function mapSubjectStatusToDto(value: string): SubjectStatusDto {
       return 'failed';
     default:
       throw new Error(`Subject status [${value}] is not supported.`);
-  }
-}
-
-function mapSexPersistenceValueToDto(value: string): SexDto {
-  switch (value) {
-    case 'male':
-      return 'male';
-    case 'female':
-      return 'female';
-    default:
-      throw new Error(`Sex [${value}] is not supported.`);
   }
 }
 
@@ -77,8 +66,27 @@ export class TypeOrmSubjectPersistenceService implements SubjectPersistence {
    * @param skip Number of records to skip (for paging).
    * @returns All subjects limited by "take" parameter.
    */
-  async getAllPaged(take: number, skip: number): Promise<{ total: number; entities: SubjectDto[] }> {
-    const pagedResult = await this.repository.findAndCount({ take, skip, order: { createdAt: 'ASC' } });
+  async getAllPaged(
+    take: number,
+    skip: number,
+    sortby: SortableColumns | undefined,
+    sortorder: string | undefined
+  ): Promise<{ total: number; entities: SubjectDto[] }> {
+    let sortDirection: FindOptionsOrderValue = 'ASC';
+    if (sortorder && sortorder.toLocaleLowerCase() === 'desc') {
+      sortDirection = 'DESC';
+    }
+
+    let sortByColumn = 'createdAt';
+    if (sortby && isSortableColumn(sortby)) {
+      sortByColumn = sortby;
+    }
+
+    const pagedResult = await this.repository.findAndCount({
+      take,
+      skip,
+      order: { [sortByColumn]: sortDirection },
+    });
     const [entities, total] = pagedResult;
     return {
       total,

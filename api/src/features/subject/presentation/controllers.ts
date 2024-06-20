@@ -4,6 +4,7 @@ import { NotFoundError } from '@core/errors';
 import { formatResultResponse } from '@core/format-response';
 import { getPageQueryParams } from '@features/shared/presentation/controllers';
 import { SubjectUseCases } from '../domain/use-cases';
+import { isSortableColumn } from '../domain/persistence';
 
 // NOTE: Using arrow functions for context binding simplicity.
 
@@ -23,8 +24,11 @@ export class SubjectController {
    */
   getAllPaged: RequestHandler = async (req, res) => {
     const { take, skip } = getPageQueryParams(req);
+    const { sortby, sortorder } = req.query;
+    const sortBy = typeof sortby === 'string' && isSortableColumn(sortby) ? sortby : undefined;
+    const sortOrder = typeof sortorder === 'string' ? sortorder : undefined;
 
-    const subjectsResult = await this.useCases.getAllPaged(take, skip);
+    const subjectsResult = await this.useCases.getAllPaged(take, skip, sortBy, sortOrder);
     const { entities, total } = subjectsResult;
 
     res.send(

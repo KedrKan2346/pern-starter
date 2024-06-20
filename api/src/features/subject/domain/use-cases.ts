@@ -1,6 +1,6 @@
 import { Logger } from 'winston';
 import { CreateOrUpdateSubjectRequestDto, SubjectDto } from './dto';
-import { SubjectPersistence } from './persistence';
+import { SortableColumns, SubjectPersistence } from './persistence';
 import { SubjectDomainEntity } from './subject-domain-entity';
 
 /**
@@ -19,8 +19,13 @@ export class SubjectUseCases {
    * @param skip Number of records to skip (for paging).
    * @returns All subjects limited by "take" parameter.
    */
-  async getAllPaged(take: number, skip: number): Promise<{ total: number; entities: SubjectDto[] }> {
-    return this.persistenceService.getAllPaged(take, skip);
+  async getAllPaged(
+    take: number,
+    skip: number,
+    sortby: SortableColumns | undefined,
+    sortorder: string | undefined
+  ): Promise<{ total: number; entities: SubjectDto[] }> {
+    return this.persistenceService.getAllPaged(take, skip, sortby, sortorder);
   }
 
   /**

@@ -5,9 +5,11 @@ import { SubjectDto } from '../domain/dto';
 import { SubjectViewModel } from '../viewmodels';
 import { mapSubjectDtoToViewModel } from '../mappers/mappers';
 
-interface UseSubjectsParams {
+interface UseSubjectsProps {
   take: number;
   skip: number;
+  sortByColumn?: string;
+  sortDirection: string;
 }
 
 interface UseSubjects {
@@ -40,19 +42,21 @@ function isQueryResultError(value: QueryResultSuccess | QueryResultError): value
   return 'error' in value;
 }
 
-export function useSubjects({ take, skip }: UseSubjectsParams): UseSubjects {
+export function useSubjects({ take, skip, sortByColumn, sortDirection }: UseSubjectsProps): UseSubjects {
   const { webApiUrl } = getServiceConfiguration();
   const [serverErrors, setServerErrors] = useState<string[]>([]);
   const [entities, setEntities] = useState<SubjectViewModel[]>([]);
   const [numberOfPages, setNumberOfPages] = useState<number>(0);
 
   async function getSubjects() {
-    const res = await fetch(`${webApiUrl}/subjects?take=${take}&skip=${skip}`);
+    const res = await fetch(
+      `${webApiUrl}/subjects?take=${take}&skip=${skip}&sortby=${sortByColumn ?? ''}&sortorder=${sortDirection}`
+    );
     return res.json();
   }
 
   const { isLoading } = useQuery<QueryResultSuccess | QueryResultError>(
-    `subject-${take}-${skip}`,
+    `subject-${take}-${skip}-${sortByColumn ?? 'none'}-${sortDirection}`,
     getSubjects,
     {
       onError: (/* error */) => {

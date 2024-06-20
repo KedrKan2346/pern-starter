@@ -1,5 +1,11 @@
 import { CreateOrUpdateSubjectRequestDto, SubjectDto } from './dto';
 
+export type SortableColumns = 'name' | 'sex' | 'status' | 'diagnosisDate';
+
+export function isSortableColumn(value: string): value is SortableColumns {
+  return value && ['name', 'sex', 'status', 'diagnosisDate'].includes(value);
+}
+
 /**
  * Subject persistence abstraction.
  */
@@ -10,7 +16,12 @@ export interface SubjectPersistence {
    * @param skip Number of records to skip (for paging).
    * @returns All subjects limited by "take" parameter.
    */
-  getAllPaged: (take: number, skip: number) => Promise<{ total: number; entities: SubjectDto[] }>;
+  getAllPaged: (
+    take: number,
+    skip: number,
+    sortby: SortableColumns | undefined,
+    sortorder: string | undefined
+  ) => Promise<{ total: number; entities: SubjectDto[] }>;
 
   /**
    * Create new subject.
