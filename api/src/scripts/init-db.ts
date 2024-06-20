@@ -1,15 +1,12 @@
 import { getServiceConfiguration } from '@core/config';
 import { createPgPool } from '@core/postgres-client';
 import { createLogger } from '@core/logger';
-import { createDbSchema } from '@migrations/1718027120-create-db-schema';
+import { createDbSchema } from './create-db-schema';
 
-const logger = createLogger('migrations');
+const logger = createLogger('scripts');
 
 /**
- * NOTE: In real production project we want to implement migration engine which has migrations
- * log table with last migration timestamp. The migration logic could read files from the migrations folder,
- * sort by name, and execute only the latest non executed scripts. File names of the migration scripts start with epoch
- * timestamp.
+ * Create DB schema.
  */
 
 (async () => {
@@ -18,6 +15,6 @@ const logger = createLogger('migrations');
     const pgPool = createPgPool(config);
     await createDbSchema(pgPool, logger);
   } catch (e) {
-    logger.error('Init db migration failed with error: ', e);
+    logger.error('DB initialization failed with error: ', e);
   }
 })();
