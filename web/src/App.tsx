@@ -17,7 +17,7 @@ export function App() {
             <Routes>
               <Route index element={<Subjects />} />
               <Route path="add" element={<AddSubject />} />
-              <Route path="edit" element={<EditSubject />} />
+              <Route path="edit/:id" element={<EditSubject />} />
 
               {/* Using path="*"" means "match anything", so this route
             acts like a catch-all for URLs that we don't have explicit

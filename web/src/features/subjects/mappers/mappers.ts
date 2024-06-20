@@ -1,6 +1,7 @@
+import { DateTime } from 'luxon';
 import { formatDateAsShort } from '@/shared/utils';
 import { SubjectDto } from '../domain/dto';
-import { SubjectViewModel } from '../viewmodels';
+import { SubjectFormData, SubjectViewModel } from '../viewmodels';
 
 /**
  * Map subject DTO to subject view model.
@@ -15,5 +16,15 @@ export function mapSubjectDtoToViewModel(subjectDto: SubjectDto): SubjectViewMod
     sex,
     status,
     diagnosisDate: formatDateAsShort(diagnosisDate),
+  };
+}
+
+export function mapSubjectDtoToFormDataModel(subjectDto: SubjectDto): SubjectFormData {
+  const { name, sex, status, diagnosisDate } = subjectDto;
+  return {
+    name,
+    sex,
+    status,
+    diagnosisDate: DateTime.fromISO(diagnosisDate).setZone('America/New_York').toJSDate(),
   };
 }

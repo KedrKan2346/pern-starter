@@ -1,8 +1,10 @@
-import { Table, LoadingOverlay, Title, Center } from '@mantine/core';
 import { ReactElement } from 'react';
+import { Link } from 'react-router-dom';
+import { Table, LoadingOverlay, Title, Center, Box } from '@mantine/core';
 import { RootLayout, WithNavigationLayout } from '@shared-layouts';
 import { useSubjects } from '../hooks/use-subjects';
 import { SubjectViewModel } from '../viewmodels';
+import { Errors } from './Errors';
 
 function SubjectItemRow(subjectItem: SubjectViewModel): ReactElement {
   const { name, sex, status, diagnosisDate, id } = subjectItem;
@@ -12,6 +14,9 @@ function SubjectItemRow(subjectItem: SubjectViewModel): ReactElement {
       <Table.Td>{sex}</Table.Td>
       <Table.Td>{status}</Table.Td>
       <Table.Td>{diagnosisDate}</Table.Td>
+      <Table.Td>
+        <Link to={`edit/${id}`}>Edit</Link>
+      </Table.Td>
     </Table.Tr>
   );
 }
@@ -25,6 +30,7 @@ function SubjectItemsTable({ subjectItems }: { subjectItems: SubjectViewModel[] 
           <Table.Th>Sex</Table.Th>
           <Table.Th>Status</Table.Th>
           <Table.Th>Diagnosis Date</Table.Th>
+          <Table.Th></Table.Th>
         </Table.Tr>
       </Table.Thead>
       <Table.Tbody>{subjectItems.map(SubjectItemRow)}</Table.Tbody>
@@ -41,9 +47,15 @@ export function Subjects(): ReactElement {
         <Center>
           <Title order={2}>Subjects</Title>
         </Center>
-        <LoadingOverlay visible={isLoading} zIndex={1000} overlayProps={{ radius: 'sm', blur: 2 }} />
-        {!isLoading && hasError && <div>Request Failed</div>}
-        {!isLoading && !hasError && <SubjectItemsTable subjectItems={entities} />}
+        <Box pos="relative">
+          <LoadingOverlay visible={isLoading} zIndex={1000} overlayProps={{ radius: 'sm', blur: 2 }} />
+          {!isLoading && !hasError && <SubjectItemsTable subjectItems={entities} />}
+          {!isLoading && hasError && (
+            <Center>
+              <Errors errors={['Unexpected error occurred']} />
+            </Center>
+          )}
+        </Box>
       </WithNavigationLayout>
     </RootLayout>
   );

@@ -1,28 +1,31 @@
-import { getServiceConfiguration } from '@/shared/config';
-import { useForm } from '@mantine/form';
 import { useState } from 'react';
 import { useMutation } from 'react-query';
+import { getServiceConfiguration } from '@/shared/config';
+import { useForm } from '@mantine/form';
+import { SubjectFormData } from '../viewmodels';
+import { SubjectDto } from '../domain/dto';
+import { mapSubjectDtoToFormDataModel } from '../mappers/mappers';
 
-interface SubjectFormData {
-  name: string;
-  sex: string;
-  status: string;
-  diagnosisDate: string;
+interface UseAddOrEditSubjectProps {
+  mode: 'add' | 'edit';
+  entity?: SubjectDto;
 }
 
-export function useAddSubjects() {
+export function useAddOrEditSubject({ mode, entity }: UseAddOrEditSubjectProps) {
   const { webApiUrl } = getServiceConfiguration();
   const [submitIsComplete, setSubmitIsComplete] = useState<boolean>(false);
   const [serverErrors, setServerErrors] = useState<string[]>([]);
 
   const form = useForm({
     mode: 'uncontrolled',
-    initialValues: {
-      name: '',
-      sex: '',
-      status: '',
-      diagnosisDate: '',
-    },
+    initialValues: entity
+      ? mapSubjectDtoToFormDataModel(entity)
+      : {
+          name: '',
+          sex: '',
+          status: '',
+          diagnosisDate: undefined,
+        },
 
     validate: {
       name: (value) => {
@@ -42,8 +45,9 @@ export function useAddSubjects() {
 
   const mutation = useMutation({
     mutationFn: (formData: SubjectFormData) => {
-      return fetch(`${webApiUrl}/subjects`, {
-        method: 'POST',
+      const urlPath = mode === 'add' ? 'subjects' : `subjects/${entity?.id}`;
+      return fetch(`${webApiUrl}/${urlPath}`, {
+        method: mode === 'add' ? 'POST' : 'PUT',
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
@@ -72,10 +76,20 @@ export function useAddSubjects() {
     mutation.mutate(formData);
   }
 
+  function handleCloseSubmissionSuccessful() {
+    setSubmitIsComplete(false);
+  }
+
+  function handleCloseErrors() {
+    setServerErrors([]);
+  }
+
   return {
     form,
     handleFormSubmit,
     serverErrors,
     submitIsComplete,
+    handleCloseSubmissionSuccessful,
+    handleCloseErrors,
   };
 }

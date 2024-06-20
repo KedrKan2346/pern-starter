@@ -21,11 +21,6 @@ export function WithNavigationLayout({ children }: WithNavigationLayoutProps): R
               Add
             </Link>
           </li>
-          <li>
-            <Link className={styles.menuLink} to="/edit">
-              Edit
-            </Link>
-          </li>
         </ul>
       </nav>
       {children}

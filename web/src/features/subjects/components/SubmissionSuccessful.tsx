@@ -1,13 +1,12 @@
-import { Alert } from '@mantine/core';
-import { IconInfoCircle } from '@tabler/icons-react';
+import { Notification, rem } from '@mantine/core';
+import { IconCheck } from '@tabler/icons-react';
 import { ReactElement } from 'react';
-import styles from './submission-successful.module.css';
 
-export function SubmissionSuccessful(): ReactElement {
-  const icon = <IconInfoCircle />;
+export function SubmissionSuccessful({ onClose }: { onClose?: () => void }): ReactElement {
+  const checkIcon = <IconCheck style={{ width: rem(20), height: rem(20) }} />;
   return (
-    <Alert variant="light" color="green" title="Success" icon={icon} className={styles.content}>
+    <Notification icon={checkIcon} color="teal" mt="md" onClose={onClose} withCloseButton={Boolean(onClose)}>
       Form submitted successfully
-    </Alert>
+    </Notification>
   );
 }
