@@ -67,4 +67,8 @@ export class SubjectUseCases {
 
     return this.persistenceService.updateById(id, dto);
   }
+
+  async deleteById(id: string): Promise<number> {
+    return this.persistenceService.deleteById(id);
+  }
 }

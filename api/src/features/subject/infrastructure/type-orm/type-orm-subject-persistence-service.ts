@@ -130,4 +130,9 @@ export class TypeOrmSubjectPersistenceService implements SubjectPersistence {
     const insertedEntity = await this.repository.update({ id }, dto);
     return insertedEntity.affected;
   }
+
+  async deleteById(id: string): Promise<number> {
+    const deletedEntity = await this.repository.delete({ id });
+    return deletedEntity.affected;
+  }
 }

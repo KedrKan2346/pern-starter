@@ -79,4 +79,15 @@ export class SubjectController {
 
     res.send(formatResultResponse(null, 'subject', 'mutation', { details: { recordsAffected } }));
   };
+
+  deleteById: RequestHandler = async (req, res) => {
+    const id = req.params['id'];
+    const recordsAffected = await this.useCases.deleteById(id);
+
+    if (!recordsAffected) {
+      throw new NotFoundError('Resource not found.');
+    }
+
+    res.send(formatResultResponse(null, 'subject', 'mutation', { details: { recordsAffected } }));
+  };
 }

@@ -46,4 +46,6 @@ export interface SubjectPersistence {
    * @returns Number of affected records.
    */
   updateById: (id: string, dto: CreateOrUpdateSubjectRequestDto) => Promise<number>;
+
+  deleteById: (id: string) => Promise<number>;
 }

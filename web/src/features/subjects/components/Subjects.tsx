@@ -1,15 +1,42 @@
 import { ReactElement } from 'react';
 import { Link } from 'react-router-dom';
-import { Table, LoadingOverlay, Title, Center, Box, Pagination, Flex, Select } from '@mantine/core';
+import {
+  Table,
+  LoadingOverlay,
+  Title,
+  Center,
+  Box,
+  Pagination,
+  Flex,
+  Select,
+  Text,
+  Button,
+} from '@mantine/core';
 import { RootLayout, WithNavigationLayout } from '@shared-layouts';
+import { modals } from '@mantine/modals';
 import { useSubjects } from '../hooks/use-subjects';
 import { useSubjectsPaging } from '../hooks/use-subjects-paging';
 import { SortDirection, useSubjectsSorting } from '../hooks/use-subjects-sorting';
+import { useDeleteSubject } from '../hooks/use-delete-subject';
 import { SubjectViewModel } from '../viewmodels';
 import { Errors } from './Errors';
 import styles from './subjects.module.css';
 
-function SubjectItemRow(subjectItem: SubjectViewModel): ReactElement {
+function showConfirmDeletionDialog(id: string, name: string, onDeleteSubject: (entityId: string) => void) {
+  return modals.openConfirmModal({
+    title: 'Confirm deletion',
+    children: <Text size="sm">You are about to delete {name}.</Text>,
+    labels: { confirm: 'Confirm', cancel: 'Cancel' },
+    onConfirm: () => {
+      onDeleteSubject(id);
+    },
+  });
+}
+
+function SubjectItemRow(
+  subjectItem: SubjectViewModel,
+  onDeleteSubject: (entityId: string) => void
+): ReactElement {
   const { name, sex, status, diagnosisDate, id } = subjectItem;
   return (
     <Table.Tr key={id}>
@@ -19,6 +46,18 @@ function SubjectItemRow(subjectItem: SubjectViewModel): ReactElement {
       <Table.Td>{diagnosisDate}</Table.Td>
       <Table.Td>
         <Link to={`edit/${id}`}>Edit</Link>
+      </Table.Td>
+      <Table.Td>
+        <Button
+          type="button"
+          variant="default"
+          size="compact-xs"
+          onClick={() => {
+            showConfirmDeletionDialog(id, name, onDeleteSubject);
+          }}
+        >
+          Delete
+        </Button>
       </Table.Td>
     </Table.Tr>
   );
@@ -30,6 +69,7 @@ interface SubjectItemsTablePros {
   numberOfPages: number;
   onSortColumnChange: (columnName?: string) => void;
   onSortDirectionChange: (sortDirection: SortDirection) => void;
+  onDeleteSubject: (id: string) => void;
   sortByColumn?: string;
   sortDirection: SortDirection;
 }
@@ -40,6 +80,7 @@ function SubjectItemsTable({
   numberOfPages,
   onSortColumnChange,
   onSortDirectionChange,
+  onDeleteSubject,
   sortByColumn,
   sortDirection,
 }: SubjectItemsTablePros): ReactElement {
@@ -78,9 +119,10 @@ function SubjectItemsTable({
             <Table.Th>Status</Table.Th>
             <Table.Th>Diagnosis Date</Table.Th>
             <Table.Th></Table.Th>
+            <Table.Th></Table.Th>
           </Table.Tr>
         </Table.Thead>
-        <Table.Tbody>{subjectItems.map(SubjectItemRow)}</Table.Tbody>
+        <Table.Tbody>{subjectItems.map((subject) => SubjectItemRow(subject, onDeleteSubject))}</Table.Tbody>
       </Table>
       <Flex justify="flex-end" align="center">
         <Pagination total={numberOfPages} onChange={onPageChange} className={styles.paging} />
@@ -93,6 +135,7 @@ export function Subjects(): ReactElement {
   const { handleSortByColumnChange, handleSortDirectionChange, sortByColumn, sortDirection } =
     useSubjectsSorting();
   const { handlePageChange, take, skip } = useSubjectsPaging();
+  const { handleDeleteSubject, deletionErrors, handleCloseDeletionErrors } = useDeleteSubject();
   const { entities, serverErrors, isLoading, numberOfPages } = useSubjects({
     take,
     skip,
@@ -100,6 +143,7 @@ export function Subjects(): ReactElement {
     sortDirection,
   });
   const hasError = serverErrors.length > 0;
+  const hasDeletionErrors = deletionErrors.length > 0;
 
   return (
     <RootLayout>
@@ -109,6 +153,11 @@ export function Subjects(): ReactElement {
         </Center>
         <Box pos="relative">
           <LoadingOverlay visible={isLoading} zIndex={1000} overlayProps={{ radius: 'sm', blur: 2 }} />
+          {!isLoading && hasDeletionErrors && (
+            <Center>
+              <Errors errors={deletionErrors} onClose={handleCloseDeletionErrors} />
+            </Center>
+          )}
           {!isLoading && !hasError && (
             <SubjectItemsTable
               subjectItems={entities}
@@ -116,6 +165,7 @@ export function Subjects(): ReactElement {
               numberOfPages={numberOfPages}
               onSortColumnChange={handleSortByColumnChange}
               onSortDirectionChange={handleSortDirectionChange}
+              onDeleteSubject={handleDeleteSubject}
               sortByColumn={sortByColumn}
               sortDirection={sortDirection}
             />

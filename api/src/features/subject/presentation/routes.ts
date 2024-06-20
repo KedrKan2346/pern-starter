@@ -51,6 +51,12 @@ export function initSubjectRouters(dataSource: DataSource, logger: Logger) {
     subjectController.updateById
   );
 
+  subjectRouters.delete(
+    '/:id',
+    createPathParamsValidator(createParamIdPathSchema('id')),
+    subjectController.deleteById
+  );
+
   subjectMainRouter.use('/subjects', subjectRouters);
 
   return subjectMainRouter;
