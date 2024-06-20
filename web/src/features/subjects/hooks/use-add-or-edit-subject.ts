@@ -55,15 +55,19 @@ export function useAddOrEditSubject({ mode, entity }: UseAddOrEditSubjectProps) 
         body: JSON.stringify(formData),
       });
     },
-    onError: (error) => {
-      console.log(error);
+    onError: (/* error */) => {
+      setServerErrors(['Unexpected error occurred']);
     },
     onSuccess: async (response) => {
       const responseBody = await response.json();
       if (response.ok) {
         setServerErrors([]);
         setSubmitIsComplete(true);
-        form.reset();
+
+        // Reset form and allow entering new subject to save
+        if (mode === 'add') {
+          form.reset();
+        }
       } else {
         setServerErrors(responseBody?.error?.messages ?? []);
       }

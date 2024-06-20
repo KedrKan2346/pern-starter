@@ -1,3 +1,5 @@
+import { ReactElement } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { DateInput } from '@mantine/dates';
 import { Button, Group, TextInput, Title, Select, Center } from '@mantine/core';
 import { useAddOrEditSubject } from '../hooks/use-add-or-edit-subject';
@@ -12,7 +14,8 @@ interface AddOrEditSubjectProps {
   entity?: SubjectDto;
 }
 
-export function AddOrEditSubject({ formTitle, mode, entity }: AddOrEditSubjectProps) {
+export function AddOrEditSubject({ formTitle, mode, entity }: AddOrEditSubjectProps): ReactElement {
+  const navigate = useNavigate();
   const {
     form,
     handleFormSubmit,
@@ -22,6 +25,10 @@ export function AddOrEditSubject({ formTitle, mode, entity }: AddOrEditSubjectPr
     submitIsComplete,
   } = useAddOrEditSubject({ mode, entity });
   const hasServerErrors = serverErrors.length > 0;
+
+  function handleClose() {
+    navigate('/');
+  }
 
   return (
     <Center>
@@ -74,6 +81,9 @@ export function AddOrEditSubject({ formTitle, mode, entity }: AddOrEditSubjectPr
           {submitIsComplete && <SubmissionSuccessful onClose={handleCloseSubmissionSuccessful} />}
           {hasServerErrors && <Errors errors={serverErrors} onClose={handleCloseErrors} />}
           <Group justify="center" mt="md">
+            <Button type="button" variant="default" onClick={handleClose}>
+              Close
+            </Button>
             <Button type="submit">Submit</Button>
           </Group>
         </form>

@@ -39,8 +39,8 @@ function SubjectItemsTable({ subjectItems }: { subjectItems: SubjectViewModel[] 
 }
 
 export function Subjects(): ReactElement {
-  const { entities, error, isLoading } = useSubjects({ take: 5, skip: 0 });
-  const hasError = Boolean(error);
+  const { entities, serverErrors, isLoading } = useSubjects({ take: 5, skip: 0 });
+  const hasError = serverErrors.length > 0;
   return (
     <RootLayout>
       <WithNavigationLayout>
@@ -52,7 +52,7 @@ export function Subjects(): ReactElement {
           {!isLoading && !hasError && <SubjectItemsTable subjectItems={entities} />}
           {!isLoading && hasError && (
             <Center>
-              <Errors errors={['Unexpected error occurred']} />
+              <Errors errors={serverErrors} />
             </Center>
           )}
         </Box>

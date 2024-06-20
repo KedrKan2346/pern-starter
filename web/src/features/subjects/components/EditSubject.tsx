@@ -15,7 +15,7 @@ export function EditSubject() {
       <WithNavigationLayout>
         <Box pos="relative">
           <LoadingOverlay visible={isLoading} zIndex={1000} overlayProps={{ radius: 'sm', blur: 2 }} />
-          {!isLoading && !hasError && (
+          {!isLoading && !hasError && entity && (
             <AddOrEditSubject formTitle="Edit Subject" mode="edit" entity={entity} />
           )}
           {!isLoading && hasError && (

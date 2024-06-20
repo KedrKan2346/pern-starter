@@ -8,7 +8,13 @@ import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
 
 export function App() {
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false,
+      },
+    },
+  });
   return (
     <React.StrictMode>
       <MantineProvider>

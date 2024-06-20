@@ -78,7 +78,9 @@ export class TypeOrmSubjectPersistenceService implements SubjectPersistence {
    * @returns All subjects limited by "take" parameter.
    */
   async getAllPaged(take: number, skip: number): Promise<SubjectDto[]> {
-    return (await this.repository.find({ take, skip })).map(mapSubjectPersistenceEntityToDto);
+    return (await this.repository.find({ take, skip, order: { createdAt: 'ASC' } })).map(
+      mapSubjectPersistenceEntityToDto
+    );
   }
 
   /**

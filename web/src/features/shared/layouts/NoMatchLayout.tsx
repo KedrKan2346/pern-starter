@@ -1,17 +1,15 @@
-import { Link } from 'react-router-dom';
+import { Center, Title } from '@mantine/core';
 import { RootLayout } from './RootLayout';
+import { WithNavigationLayout } from './WithNavigationLayout';
 
 export function NoMatchLayout() {
   return (
     <RootLayout>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-        </ul>
-      </nav>
-      <div>No Match</div>
+      <WithNavigationLayout>
+        <Center>
+          <Title order={1}>Page Not found</Title>
+        </Center>
+      </WithNavigationLayout>
     </RootLayout>
   );
 }
