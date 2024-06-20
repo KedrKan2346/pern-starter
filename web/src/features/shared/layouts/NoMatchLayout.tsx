@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
-import { RootLayout } from "./RootLayout";
+import { Link } from 'react-router-dom';
+import { RootLayout } from './RootLayout';
 
 export function NoMatchLayout() {
   return (

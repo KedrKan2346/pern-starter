@@ -26,6 +26,6 @@ export interface ServiceConfiguration {
  */
 export function getServiceConfiguration(): ServiceConfiguration {
   return {
-    webApiUrl: getEnvValueOrThrow("WEB_API_URL"),
+    webApiUrl: getEnvValueOrThrow('WEB_API_URL'),
   };
 }

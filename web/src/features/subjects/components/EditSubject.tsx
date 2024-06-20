@@ -1,4 +1,4 @@
-import { RootLayout, WithNavigationLayout } from "@shared-layouts";
+import { RootLayout, WithNavigationLayout } from '@shared-layouts';
 
 export function EditSubject() {
   return (

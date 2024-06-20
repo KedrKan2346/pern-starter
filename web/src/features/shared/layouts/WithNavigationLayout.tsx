@@ -1,14 +1,12 @@
-import { ReactElement, ReactNode } from "react";
-import { Link } from "react-router-dom";
-import styles from "./with-navigation-layout.module.css";
+import { ReactElement, ReactNode } from 'react';
+import { Link } from 'react-router-dom';
+import styles from './with-navigation-layout.module.css';
 
 interface WithNavigationLayoutProps {
   children: ReactNode;
 }
 
-export function WithNavigationLayout({
-  children,
-}: WithNavigationLayoutProps): ReactElement {
+export function WithNavigationLayout({ children }: WithNavigationLayoutProps): ReactElement {
   return (
     <div>
       <nav className={styles.menuBar}>

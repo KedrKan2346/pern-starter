@@ -1,5 +1,5 @@
-import { ReactElement, ReactNode } from "react";
-import styles from "./root-layout.module.css";
+import { ReactElement, ReactNode } from 'react';
+import styles from './root-layout.module.css';
 
 interface RootLayoutProps {
   children: ReactNode;

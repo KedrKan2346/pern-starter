@@ -1,10 +1,10 @@
-import * as React from "react";
-import { QueryClient, QueryClientProvider } from "react-query";
-import { Routes, Route, BrowserRouter } from "react-router-dom";
-import { NoMatchLayout } from "@features/shared/layouts";
-import { Subjects, AddSubject, EditSubject } from "@features/subjects";
-import { MantineProvider } from "@mantine/core";
-import "@mantine/core/styles.css";
+import * as React from 'react';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { Routes, Route, BrowserRouter } from 'react-router-dom';
+import { NoMatchLayout } from '@features/shared/layouts';
+import { Subjects, AddSubject, EditSubject } from '@features/subjects';
+import { MantineProvider } from '@mantine/core';
+import '@mantine/core/styles.css';
 
 export function App() {
   const queryClient = new QueryClient();

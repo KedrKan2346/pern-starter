@@ -1,8 +1,8 @@
-import { Table, LoadingOverlay } from "@mantine/core";
-import { ReactElement } from "react";
-import { RootLayout, WithNavigationLayout } from "@shared-layouts";
-import { useSubjects } from "../hooks/use-subjects";
-import { SubjectViewModel } from "../viewmodels";
+import { Table, LoadingOverlay } from '@mantine/core';
+import { ReactElement } from 'react';
+import { RootLayout, WithNavigationLayout } from '@shared-layouts';
+import { useSubjects } from '../hooks/use-subjects';
+import { SubjectViewModel } from '../viewmodels';
 
 function SubjectItemRow(subjectItem: SubjectViewModel): ReactElement {
   const { name, sex, status, diagnosisDate, id } = subjectItem;
@@ -16,11 +16,7 @@ function SubjectItemRow(subjectItem: SubjectViewModel): ReactElement {
   );
 }
 
-function SubjectItemsTable({
-  subjectItems,
-}: {
-  subjectItems: SubjectViewModel[];
-}): ReactElement {
+function SubjectItemsTable({ subjectItems }: { subjectItems: SubjectViewModel[] }): ReactElement {
   return (
     <Table>
       <Table.Thead>
@@ -43,15 +39,9 @@ export function Subjects(): ReactElement {
     <RootLayout>
       <WithNavigationLayout>
         <div>
-          <LoadingOverlay
-            visible={isLoading}
-            zIndex={1000}
-            overlayProps={{ radius: "sm", blur: 2 }}
-          />
+          <LoadingOverlay visible={isLoading} zIndex={1000} overlayProps={{ radius: 'sm', blur: 2 }} />
           {!isLoading && hasError && <div>Request Failed</div>}
-          {!isLoading && !hasError && (
-            <SubjectItemsTable subjectItems={entities} />
-          )}
+          {!isLoading && !hasError && <SubjectItemsTable subjectItems={entities} />}
         </div>
       </WithNavigationLayout>
     </RootLayout>

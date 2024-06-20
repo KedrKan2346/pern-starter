@@ -1,4 +1,4 @@
-import { DateTime } from "luxon";
+import { DateTime } from 'luxon';
 
 /**
  * Check if value is numeric (int or decimal).
@@ -30,7 +30,5 @@ export function tryGetNumericValue(value: string): number | undefined {
  */
 export function formatDateAsShort(dateString: string) {
   // TechDebt: Read timezone from user settings.
-  return DateTime.fromISO(dateString)
-    .setZone("America/New_York")
-    .toFormat("MMM dd, yyyy");
+  return DateTime.fromISO(dateString).setZone('America/New_York').toFormat('MMM dd, yyyy');
 }

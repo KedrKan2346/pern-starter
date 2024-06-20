@@ -1,7 +1,7 @@
-import { RootLayout, WithNavigationLayout } from "@shared-layouts";
-import { Button, Group, TextInput, Title } from "@mantine/core";
-import { useAddSubjects } from "../hooks/use-add-subjects";
-import styles from "./add-subject.module.css";
+import { RootLayout, WithNavigationLayout } from '@shared-layouts';
+import { Button, Group, TextInput, Title } from '@mantine/core';
+import { useAddSubjects } from '../hooks/use-add-subjects';
+import styles from './add-subject.module.css';
 
 export function AddSubject() {
   const { form, handleFormSubmit } = useAddSubjects();
@@ -18,8 +18,8 @@ export function AddSubject() {
               withAsterisk
               label="Name"
               placeholder="Subject name"
-              key={form.key("name")}
-              {...form.getInputProps("name")}
+              key={form.key('name')}
+              {...form.getInputProps('name')}
             />
 
             <Group justify="center" mt="md">

@@ -1,8 +1,8 @@
-import { useQuery } from "react-query";
-import { getServiceConfiguration } from "@config";
-import { SubjectDto } from "../domain/dto";
-import { SubjectViewModel } from "../viewmodels";
-import { mapSubjectDtoToViewModel } from "../mappers/mappers";
+import { useQuery } from 'react-query';
+import { getServiceConfiguration } from '@config';
+import { SubjectDto } from '../domain/dto';
+import { SubjectViewModel } from '../viewmodels';
+import { mapSubjectDtoToViewModel } from '../mappers/mappers';
 
 interface UseSubjectsParams {
   take?: number;
@@ -31,10 +31,7 @@ export function useSubjects({ take, skip }: UseSubjectsParams): UseSubjects {
     return res.json();
   }
 
-  const { data, error, isLoading } = useQuery<QueryResult>(
-    "subjects",
-    getSubjects
-  );
+  const { data, error, isLoading } = useQuery<QueryResult>('subjects', getSubjects);
   const queryResult = data?.result?.query ?? {};
   const entities = queryResult.subjects ?? [];
 

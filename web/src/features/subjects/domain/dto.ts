@@ -1,6 +1,6 @@
-export type SexDto = "male" | "female";
+export type SexDto = 'male' | 'female';
 
-export type SubjectStatusDto = "in_progress" | "enrolled" | "failed";
+export type SubjectStatusDto = 'in_progress' | 'enrolled' | 'failed';
 
 export interface SubjectDto {
   id: string;
