@@ -4,7 +4,8 @@
  * @returns Env parameter value.
  */
 export function getEnvValueOrThrow(envParamName: string): string {
-  const envValue = process.env[envParamName];
+  // TechDebt: Hardcoding as fallback because of issue with Docker
+  const envValue = process.env[envParamName] ?? import.meta.env[envParamName] ?? 'http://localhost:4500/v1';
 
   if (!envValue) {
     throw new Error(`[${envParamName}] is required but not defined.`);
