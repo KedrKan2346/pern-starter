@@ -1,10 +1,12 @@
 import { ReactElement } from 'react';
 import { Link } from 'react-router-dom';
-import { Table, LoadingOverlay, Title, Center, Box } from '@mantine/core';
+import { Table, LoadingOverlay, Title, Center, Box, Pagination, Flex } from '@mantine/core';
 import { RootLayout, WithNavigationLayout } from '@shared-layouts';
 import { useSubjects } from '../hooks/use-subjects';
+import { useSubjectsPaging } from '../hooks/use-subjects-paging';
 import { SubjectViewModel } from '../viewmodels';
 import { Errors } from './Errors';
+import styles from './subjects.module.css';
 
 function SubjectItemRow(subjectItem: SubjectViewModel): ReactElement {
   const { name, sex, status, diagnosisDate, id } = subjectItem;
@@ -21,25 +23,41 @@ function SubjectItemRow(subjectItem: SubjectViewModel): ReactElement {
   );
 }
 
-function SubjectItemsTable({ subjectItems }: { subjectItems: SubjectViewModel[] }): ReactElement {
+interface SubjectItemsTablePros {
+  subjectItems: SubjectViewModel[];
+  onPageChange?: (value: number) => void;
+  numberOfPages: number;
+}
+
+function SubjectItemsTable({
+  subjectItems,
+  onPageChange,
+  numberOfPages,
+}: SubjectItemsTablePros): ReactElement {
   return (
-    <Table>
-      <Table.Thead>
-        <Table.Tr>
-          <Table.Th>Name</Table.Th>
-          <Table.Th>Sex</Table.Th>
-          <Table.Th>Status</Table.Th>
-          <Table.Th>Diagnosis Date</Table.Th>
-          <Table.Th></Table.Th>
-        </Table.Tr>
-      </Table.Thead>
-      <Table.Tbody>{subjectItems.map(SubjectItemRow)}</Table.Tbody>
-    </Table>
+    <>
+      <Table striped>
+        <Table.Thead>
+          <Table.Tr>
+            <Table.Th>Name</Table.Th>
+            <Table.Th>Sex</Table.Th>
+            <Table.Th>Status</Table.Th>
+            <Table.Th>Diagnosis Date</Table.Th>
+            <Table.Th></Table.Th>
+          </Table.Tr>
+        </Table.Thead>
+        <Table.Tbody>{subjectItems.map(SubjectItemRow)}</Table.Tbody>
+      </Table>
+      <Flex justify="flex-end" align="center">
+        <Pagination total={numberOfPages} onChange={onPageChange} className={styles.paging} />
+      </Flex>
+    </>
   );
 }
 
 export function Subjects(): ReactElement {
-  const { entities, serverErrors, isLoading } = useSubjects({ take: 5, skip: 0 });
+  const { handlePageChange, take, skip } = useSubjectsPaging();
+  const { entities, serverErrors, isLoading, numberOfPages } = useSubjects({ take, skip });
   const hasError = serverErrors.length > 0;
   return (
     <RootLayout>
@@ -49,7 +67,13 @@ export function Subjects(): ReactElement {
         </Center>
         <Box pos="relative">
           <LoadingOverlay visible={isLoading} zIndex={1000} overlayProps={{ radius: 'sm', blur: 2 }} />
-          {!isLoading && !hasError && <SubjectItemsTable subjectItems={entities} />}
+          {!isLoading && !hasError && (
+            <SubjectItemsTable
+              subjectItems={entities}
+              onPageChange={handlePageChange}
+              numberOfPages={numberOfPages}
+            />
+          )}
           {!isLoading && hasError && (
             <Center>
               <Errors errors={serverErrors} />

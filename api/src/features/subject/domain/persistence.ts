@@ -10,7 +10,7 @@ export interface SubjectPersistence {
    * @param skip Number of records to skip (for paging).
    * @returns All subjects limited by "take" parameter.
    */
-  getAllPaged: (take: number, skip: number) => Promise<SubjectDto[]>;
+  getAllPaged: (take: number, skip: number) => Promise<{ total: number; entities: SubjectDto[] }>;
 
   /**
    * Create new subject.

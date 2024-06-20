@@ -24,11 +24,12 @@ export class SubjectController {
   getAllPaged: RequestHandler = async (req, res) => {
     const { take, skip } = getPageQueryParams(req);
 
-    const subjects = await this.useCases.getAllPaged(take, skip);
+    const subjectsResult = await this.useCases.getAllPaged(take, skip);
+    const { entities, total } = subjectsResult;
 
     res.send(
-      formatResultResponse(subjects, 'subjects', 'query', {
-        details: { take, skip, count: subjects.length },
+      formatResultResponse(entities, 'subjects', 'query', {
+        details: { take, skip, total },
       })
     );
   };

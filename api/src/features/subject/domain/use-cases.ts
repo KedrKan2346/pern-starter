@@ -19,7 +19,7 @@ export class SubjectUseCases {
    * @param skip Number of records to skip (for paging).
    * @returns All subjects limited by "take" parameter.
    */
-  async getAllPaged(take: number, skip: number): Promise<SubjectDto[]> {
+  async getAllPaged(take: number, skip: number): Promise<{ total: number; entities: SubjectDto[] }> {
     return this.persistenceService.getAllPaged(take, skip);
   }
 
