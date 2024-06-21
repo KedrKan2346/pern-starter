@@ -25,7 +25,7 @@ WEB_API_URL=http://localhost:4500/v1
 6. Run `pnpm init-db:dev`. This will create database schema.
 7. Open browser and enter `http://localhost:8000`
 
-## Api project scripts in package.json
+## API project scripts in package.json
 
 - `init-db:dev` - create database table;
 - `start` - used by docker to start API server;
