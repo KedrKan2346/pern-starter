@@ -23,9 +23,20 @@ export class SubjectUseCases {
     take: number,
     skip: number,
     sortby: SortableColumns | undefined,
-    sortorder: string | undefined
+    sortorder: string | undefined,
+    nameLookupText: string | undefined,
+    sexFilterValues: string[] | undefined,
+    statusFilterValues: string[] | undefined
   ): Promise<{ total: number; entities: SubjectDto[] }> {
-    return this.persistenceService.getAllPaged(take, skip, sortby, sortorder);
+    return this.persistenceService.getAllPaged(
+      take,
+      skip,
+      sortby,
+      sortorder,
+      nameLookupText,
+      sexFilterValues,
+      statusFilterValues
+    );
   }
 
   /**

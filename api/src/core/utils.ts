@@ -19,3 +19,11 @@ export function tryGetNumericValue(value: any): number | undefined {
     return;
   }
 }
+
+export function tryGetStringArrayFromQueryString(value: string): string[] {
+  try {
+    return decodeURIComponent(value).split(',');
+  } catch {
+    return [];
+  }
+}

@@ -1,5 +1,6 @@
 import { RequestHandler } from 'express';
 import { Logger } from 'winston';
+import { tryGetStringArrayFromQueryString } from '@core/utils';
 import { NotFoundError } from '@core/errors';
 import { formatResultResponse } from '@core/format-response';
 import { getPageQueryParams } from '@features/shared/presentation/controllers';
@@ -24,11 +25,23 @@ export class SubjectController {
    */
   getAllPaged: RequestHandler = async (req, res) => {
     const { take, skip } = getPageQueryParams(req);
-    const { sortby, sortorder } = req.query;
+    const { sortby, sortorder, name, sex, status } = req.query;
     const sortBy = typeof sortby === 'string' && isSortableColumn(sortby) ? sortby : undefined;
     const sortOrder = typeof sortorder === 'string' ? sortorder : undefined;
+    const nameLookupText = typeof name === 'string' ? name : undefined;
+    const sexFilterValues = typeof sex === 'string' ? tryGetStringArrayFromQueryString(sex) : undefined;
+    const statusFilterValues =
+      typeof status === 'string' ? tryGetStringArrayFromQueryString(status) : undefined;
 
-    const subjectsResult = await this.useCases.getAllPaged(take, skip, sortBy, sortOrder);
+    const subjectsResult = await this.useCases.getAllPaged(
+      take,
+      skip,
+      sortBy,
+      sortOrder,
+      nameLookupText,
+      sexFilterValues,
+      statusFilterValues
+    );
     const { entities, total } = subjectsResult;
 
     res.send(

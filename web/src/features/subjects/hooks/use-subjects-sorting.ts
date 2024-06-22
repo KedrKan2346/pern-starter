@@ -1,23 +1,21 @@
 import { useState } from 'react';
 
-export type SortDirection = 'ASC' | 'DESC';
-
 interface UseSubjectsSorting {
-  sortByColumn?: string;
-  sortDirection: SortDirection;
-  handleSortByColumnChange: (columnName?: string) => void;
-  handleSortDirectionChange: (sortDirection: SortDirection) => void;
+  sortByColumn: string | null;
+  sortDirection: string | null;
+  handleSortByColumnChange: (columnName: string | null) => void;
+  handleSortDirectionChange: (sortDirection: string | null) => void;
 }
 
 export function useSubjectsSorting(): UseSubjectsSorting {
-  const [sortByColumn, setSortByColumn] = useState<string>();
-  const [sortDirection, setSortDirection] = useState<SortDirection>('ASC');
+  const [sortByColumn, setSortByColumn] = useState<string | null>(null);
+  const [sortDirection, setSortDirection] = useState<string | null>('ASC');
 
-  function handleSortByColumnChange(columnName?: string) {
+  function handleSortByColumnChange(columnName: string | null) {
     setSortByColumn(columnName);
   }
 
-  function handleSortDirectionChange(sortDirection: SortDirection) {
+  function handleSortDirectionChange(sortDirection: string | null) {
     setSortDirection(sortDirection);
   }
 

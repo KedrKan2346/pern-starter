@@ -20,7 +20,10 @@ export interface SubjectPersistence {
     take: number,
     skip: number,
     sortby: SortableColumns | undefined,
-    sortorder: string | undefined
+    sortorder: string | undefined,
+    nameLookupText: string | undefined,
+    sexFilterValues: string[] | undefined,
+    statusFilterValues: string[] | undefined
   ) => Promise<{ total: number; entities: SubjectDto[] }>;
 
   /**

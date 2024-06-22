@@ -4,12 +4,12 @@ import { DataSource } from 'typeorm';
 import { SubjectController } from './controllers';
 import { SubjectUseCases } from '../domain/use-cases';
 import { TypeOrmSubjectPersistenceService } from '../infrastructure';
-import { subjectCreateOrUpdateDtoSchema } from './validators';
+import { subjectCreateOrUpdateDtoSchema, subjectsFilterQueryParamsSchema } from './validators';
 import {
   createPathParamsValidator,
   createQueryParamsValidator,
   createRequestBodyValidator,
-  pageQueryParamsSchema,
+  pagingQueryParamsSchema,
   createParamIdPathSchema,
 } from '@features/shared/presentation/validators';
 
@@ -30,7 +30,12 @@ export function initSubjectRouters(dataSource: DataSource, logger: Logger) {
   const subjectUseCases = new SubjectUseCases(subjectPersistenceService, logger);
   const subjectController = new SubjectController(subjectUseCases, logger);
 
-  subjectRouters.get('/', createQueryParamsValidator(pageQueryParamsSchema), subjectController.getAllPaged);
+  subjectRouters.get(
+    '/',
+    createQueryParamsValidator(pagingQueryParamsSchema),
+    createQueryParamsValidator(subjectsFilterQueryParamsSchema),
+    subjectController.getAllPaged
+  );
 
   subjectRouters.get(
     '/:id',

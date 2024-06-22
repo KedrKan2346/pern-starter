@@ -1,4 +1,4 @@
-import { DataSource, FindOptionsOrderValue, Repository } from 'typeorm';
+import { DataSource, FindOptionsOrderValue, FindOptionsWhere, In, Raw, Repository } from 'typeorm';
 import { Logger } from 'winston';
 import { CreateOrUpdateSubjectRequestDto, SubjectDto, SexDto, SubjectStatusDto } from '../../domain/dto';
 import { SortableColumns, SubjectPersistence, isSortableColumn } from '../../domain/persistence';
@@ -70,7 +70,10 @@ export class TypeOrmSubjectPersistenceService implements SubjectPersistence {
     take: number,
     skip: number,
     sortby: SortableColumns | undefined,
-    sortorder: string | undefined
+    sortorder: string | undefined,
+    nameLookupText: string | undefined,
+    sexFilterValues: string[] | undefined,
+    statusFilterValues: string[] | undefined
   ): Promise<{ total: number; entities: SubjectDto[] }> {
     let sortDirection: FindOptionsOrderValue = 'ASC';
     if (sortorder && sortorder.toLocaleLowerCase() === 'desc') {
@@ -82,10 +85,27 @@ export class TypeOrmSubjectPersistenceService implements SubjectPersistence {
       sortByColumn = sortby;
     }
 
+    // Filter by name
+    const where: FindOptionsWhere<TypeOrmSubjectPersistence> = {};
+    if (nameLookupText) {
+      // IMPORTANT: This is XSS vulnerable string but this text is validated in route middleware.
+      // The raw condition is needed to achieve case insensitive search without changing collation in database.
+      where.name = Raw((alias) => `LOWER(${alias}) Like '%${nameLookupText.toLowerCase()}%'`);
+    }
+    // Filter by sex
+    if (sexFilterValues && sexFilterValues.length > 0) {
+      where.sex = In(sexFilterValues);
+    }
+    // Filter by status
+    if (statusFilterValues && statusFilterValues.length > 0) {
+      where.status = In(statusFilterValues);
+    }
+
     const pagedResult = await this.repository.findAndCount({
       take,
       skip,
       order: { [sortByColumn]: sortDirection },
+      where,
     });
     const [entities, total] = pagedResult;
     return {

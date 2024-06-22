@@ -36,7 +36,7 @@ export function createParamIdPathSchema(idParameterName: string) {
  * Paging query parameters validation schema. Makes sure "take" query parameter is not greater than 1000
  * to prevent database server overload and OOM errors.
  */
-export const pageQueryParamsSchema = z.object({
+export const pagingQueryParamsSchema = z.object({
   take: z
     .string()
     .optional()

@@ -10,6 +10,7 @@ interface SubjectsTableProps {
   onPageChange?: (value: number) => void;
   numberOfPages: number;
   onDeleteSubject: (id: string) => void;
+  pageNumber: number;
 }
 
 function showConfirmDeletionDialog(id: string, name: string, onDeleteSubject: (entityId: string) => void) {
@@ -58,6 +59,7 @@ export function SubjectsTable({
   onPageChange,
   numberOfPages,
   onDeleteSubject,
+  pageNumber,
 }: SubjectsTableProps): ReactElement {
   return (
     <>
@@ -75,7 +77,12 @@ export function SubjectsTable({
         <Table.Tbody>{subjectItems.map((subject) => SubjectsTableRow(subject, onDeleteSubject))}</Table.Tbody>
       </Table>
       <Flex justify="flex-end" align="center">
-        <Pagination total={numberOfPages} onChange={onPageChange} className={styles.paging} />
+        <Pagination
+          total={numberOfPages}
+          onChange={onPageChange}
+          className={styles.paging}
+          defaultValue={pageNumber}
+        />
       </Flex>
     </>
   );

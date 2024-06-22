@@ -78,9 +78,25 @@ describe('Subject use case should', () => {
 
   it('return paged subjects', async () => {
     const useCases = new SubjectUseCases(mockPersistence, mockLogger);
-    const subjects = await useCases.getAllPaged(10, 1, 'name', 'desc');
+    const subjects = await useCases.getAllPaged(
+      10,
+      1,
+      'name',
+      'desc',
+      'search text',
+      ['male', 'female'],
+      ['in_progress', 'enrolled']
+    );
     expect(mockPersistence.getAllPaged).toHaveBeenCalledTimes(1);
-    expect(mockPersistence.getAllPaged).toHaveBeenCalledWith(10, 1, 'name', 'desc');
+    expect(mockPersistence.getAllPaged).toHaveBeenCalledWith(
+      10,
+      1,
+      'name',
+      'desc',
+      'search text',
+      ['male', 'female'],
+      ['in_progress', 'enrolled']
+    );
     expect(subjects).toEqual(subjectsResponse);
   });
 
