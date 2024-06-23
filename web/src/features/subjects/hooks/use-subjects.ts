@@ -4,6 +4,7 @@ import { getServiceConfiguration } from '@config';
 import { SubjectDto } from '../domain/dto';
 import { SubjectViewModel } from '../viewmodels';
 import { mapSubjectDtoToViewModel } from '../mappers/mappers';
+import { DateTime } from 'luxon';
 
 interface UseSubjectsProps {
   take: number;
@@ -13,6 +14,7 @@ interface UseSubjectsProps {
   nameLookupText: string | undefined;
   sexFilterValues: string[];
   statusFilterValues: string[];
+  dateRangeFilterValues: [Date | null, Date | null];
 }
 
 interface UseSubjects {
@@ -53,6 +55,7 @@ export function useSubjects({
   nameLookupText,
   sexFilterValues,
   statusFilterValues,
+  dateRangeFilterValues,
 }: UseSubjectsProps): UseSubjects {
   const { webApiUrl } = getServiceConfiguration();
   const [serverErrors, setServerErrors] = useState<string[]>([]);
@@ -76,6 +79,21 @@ export function useSubjects({
   }
   if (statusFilterValues.length > 0) {
     apiUrlWithQueryParams.searchParams.set('status', statusFilterValues.join(','));
+  }
+  const dateRangeFilterStartDate = dateRangeFilterValues[0];
+  const dateRangeFilterEndDate = dateRangeFilterValues[1];
+
+  if (dateRangeFilterStartDate) {
+    const startDiagnosisDate = DateTime.fromJSDate(dateRangeFilterStartDate).toISODate();
+    if (startDiagnosisDate) {
+      apiUrlWithQueryParams.searchParams.set('start_diag_date', startDiagnosisDate);
+    }
+  }
+  if (dateRangeFilterEndDate) {
+    const endDiagnosisDate = DateTime.fromJSDate(dateRangeFilterEndDate).toISODate();
+    if (endDiagnosisDate) {
+      apiUrlWithQueryParams.searchParams.set('end_diag_date', endDiagnosisDate);
+    }
   }
 
   async function getSubjects() {

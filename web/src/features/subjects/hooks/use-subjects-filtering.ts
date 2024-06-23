@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
-import { useDebounce } from 'use-debounce';
+import { useDebouncedValue } from '@mantine/hooks';
 interface UseSubjectsFiltering {
   nameLookupText?: string;
   handleNameLookupTextChange: (lookupText?: string) => void;
   debouncedNameLookupText?: string;
   sexFilterValues: string[];
   statusFilterValues: string[];
+  dateRangeFilterValues: [Date | null, Date | null];
   handleSexFilterChange: (values: string[]) => void;
   handleStatusFilterChange: (values: string[]) => void;
+  handleDateRangeFilterChange: (value: [Date | null, Date | null]) => void;
 }
 
 interface UseSubjectsFilteringProps {
@@ -18,7 +20,11 @@ export function useSubjectsFiltering({ resetPaging }: UseSubjectsFilteringProps)
   const [nameLookupText, setNameLookupText] = useState<string>();
   const [sexFilterValues, setSexFilterValues] = useState<string[]>([]);
   const [statusFilterValues, setStatusFilterValues] = useState<string[]>([]);
-  const [debouncedNameLookupText] = useDebounce(nameLookupText, 300);
+  const [dateRangeFilterValues, setDateRangeFilterValues] = useState<[Date | null, Date | null]>([
+    null,
+    null,
+  ]);
+  const [debouncedNameLookupText] = useDebouncedValue(nameLookupText, 300);
 
   useEffect(() => {
     if (debouncedNameLookupText) {
@@ -41,13 +47,20 @@ export function useSubjectsFiltering({ resetPaging }: UseSubjectsFilteringProps)
     resetPaging();
   }
 
+  function handleDateRangeFilterChange(value: [Date | null, Date | null]) {
+    setDateRangeFilterValues(value);
+    resetPaging();
+  }
+
   return {
     nameLookupText,
     debouncedNameLookupText,
     sexFilterValues,
     statusFilterValues,
+    dateRangeFilterValues,
     handleNameLookupTextChange,
     handleSexFilterChange,
     handleStatusFilterChange,
+    handleDateRangeFilterChange,
   };
 }

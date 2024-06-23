@@ -23,7 +23,8 @@ export interface SubjectPersistence {
     sortorder: string | undefined,
     nameLookupText: string | undefined,
     sexFilterValues: string[] | undefined,
-    statusFilterValues: string[] | undefined
+    statusFilterValues: string[] | undefined,
+    diagnosisDateFilter: [Date | undefined, Date | undefined]
   ) => Promise<{ total: number; entities: SubjectDto[] }>;
 
   /**

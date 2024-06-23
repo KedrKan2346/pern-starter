@@ -1,23 +1,28 @@
 import { ChangeEvent, ReactElement } from 'react';
 import { Flex, TextInput, Box, MultiSelect } from '@mantine/core';
+import { DatePickerInput } from '@mantine/dates';
 import styles from './subjects-filter.module.css';
 
 interface SubjectsFilterProps {
   nameLookupText?: string;
   sexFilterValues: string[];
   statusFilterValues: string[];
+  dateRangeFilterValues: [Date | null, Date | null];
   onNameLookupChange: (lookupText: string | undefined) => void;
   onSexFilterChange: (values: string[]) => void;
   onStatusFilterChange: (values: string[]) => void;
+  onDateRangeFilterChange: (value: [Date | null, Date | null]) => void;
 }
 
 export function SubjectsFilter({
   nameLookupText,
   sexFilterValues,
   statusFilterValues,
+  dateRangeFilterValues,
   onNameLookupChange,
   onSexFilterChange,
   onStatusFilterChange,
+  onDateRangeFilterChange,
 }: SubjectsFilterProps): ReactElement {
   return (
     <Box className={styles.content}>
@@ -32,6 +37,15 @@ export function SubjectsFilter({
         />
       </Flex>
       <Flex justify="flex-start" align="center" gap="md">
+        <DatePickerInput
+          type="range"
+          allowSingleDateInRange
+          label="Pick Diagnosis Date Range"
+          placeholder="Pick dates range"
+          value={dateRangeFilterValues}
+          onChange={onDateRangeFilterChange}
+          clearable
+        />
         <MultiSelect
           label="Filter by Status"
           placeholder="Pick value"

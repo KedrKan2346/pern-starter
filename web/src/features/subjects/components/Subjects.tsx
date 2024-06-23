@@ -20,9 +20,11 @@ export function Subjects(): ReactElement {
     debouncedNameLookupText,
     sexFilterValues,
     statusFilterValues,
+    dateRangeFilterValues,
     handleSexFilterChange,
     handleNameLookupTextChange,
     handleStatusFilterChange,
+    handleDateRangeFilterChange,
   } = useSubjectsFiltering({ resetPaging });
   const { handleDeleteSubject, deletionErrors, handleCloseDeletionErrors } = useDeleteSubject();
   const { entities, serverErrors, isLoading, numberOfPages } = useSubjects({
@@ -33,6 +35,7 @@ export function Subjects(): ReactElement {
     nameLookupText: debouncedNameLookupText,
     sexFilterValues,
     statusFilterValues,
+    dateRangeFilterValues,
   });
   const hasError = serverErrors.length > 0;
   const hasDeletionErrors = deletionErrors.length > 0;
@@ -50,6 +53,8 @@ export function Subjects(): ReactElement {
           onSexFilterChange={handleSexFilterChange}
           statusFilterValues={statusFilterValues}
           onStatusFilterChange={handleStatusFilterChange}
+          dateRangeFilterValues={dateRangeFilterValues}
+          onDateRangeFilterChange={handleDateRangeFilterChange}
         />
         <SubjectsSort
           sortByColumn={sortByColumn}

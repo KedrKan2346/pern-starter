@@ -1,6 +1,11 @@
 import { RequestHandler } from 'express';
 import { Logger } from 'winston';
-import { tryGetStringArrayFromQueryString } from '@core/utils';
+import {
+  getInclusiveJsEndDateFilterValue,
+  tryGetJsDateFromQueryString,
+  tryGetLuxonDateFromQueryString,
+  tryGetStringArrayFromQueryString,
+} from '@core/utils';
 import { NotFoundError } from '@core/errors';
 import { formatResultResponse } from '@core/format-response';
 import { getPageQueryParams } from '@features/shared/presentation/controllers';
@@ -25,13 +30,19 @@ export class SubjectController {
    */
   getAllPaged: RequestHandler = async (req, res) => {
     const { take, skip } = getPageQueryParams(req);
-    const { sortby, sortorder, name, sex, status } = req.query;
+    const { sortby, sortorder, name, sex, status, start_diag_date, end_diag_date } = req.query;
     const sortBy = typeof sortby === 'string' && isSortableColumn(sortby) ? sortby : undefined;
     const sortOrder = typeof sortorder === 'string' ? sortorder : undefined;
     const nameLookupText = typeof name === 'string' ? name : undefined;
     const sexFilterValues = typeof sex === 'string' ? tryGetStringArrayFromQueryString(sex) : undefined;
     const statusFilterValues =
       typeof status === 'string' ? tryGetStringArrayFromQueryString(status) : undefined;
+    const startDiagnosisDateFilterValue =
+      typeof start_diag_date === 'string' ? tryGetJsDateFromQueryString(start_diag_date) : undefined;
+    const endDiagnosisDateFilterValue =
+      typeof end_diag_date === 'string'
+        ? getInclusiveJsEndDateFilterValue(tryGetLuxonDateFromQueryString(end_diag_date))
+        : undefined;
 
     const subjectsResult = await this.useCases.getAllPaged(
       take,
@@ -40,7 +51,8 @@ export class SubjectController {
       sortOrder,
       nameLookupText,
       sexFilterValues,
-      statusFilterValues
+      statusFilterValues,
+      [startDiagnosisDateFilterValue, endDiagnosisDateFilterValue]
     );
     const { entities, total } = subjectsResult;
 

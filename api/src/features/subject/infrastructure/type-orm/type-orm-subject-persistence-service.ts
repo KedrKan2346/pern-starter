@@ -1,4 +1,15 @@
-import { DataSource, FindOptionsOrderValue, FindOptionsWhere, In, Raw, Repository } from 'typeorm';
+import {
+  DataSource,
+  FindOptionsOrderValue,
+  FindOptionsWhere,
+  In,
+  Raw,
+  Repository,
+  LessThan,
+  MoreThanOrEqual,
+  LessThanOrEqual,
+  Between,
+} from 'typeorm';
 import { Logger } from 'winston';
 import { CreateOrUpdateSubjectRequestDto, SubjectDto, SexDto, SubjectStatusDto } from '../../domain/dto';
 import { SortableColumns, SubjectPersistence, isSortableColumn } from '../../domain/persistence';
@@ -73,7 +84,8 @@ export class TypeOrmSubjectPersistenceService implements SubjectPersistence {
     sortorder: string | undefined,
     nameLookupText: string | undefined,
     sexFilterValues: string[] | undefined,
-    statusFilterValues: string[] | undefined
+    statusFilterValues: string[] | undefined,
+    diagnosisDateFilter: [Date | undefined, Date | undefined]
   ): Promise<{ total: number; entities: SubjectDto[] }> {
     let sortDirection: FindOptionsOrderValue = 'ASC';
     if (sortorder && sortorder.toLocaleLowerCase() === 'desc') {
@@ -99,6 +111,17 @@ export class TypeOrmSubjectPersistenceService implements SubjectPersistence {
     // Filter by status
     if (statusFilterValues && statusFilterValues.length > 0) {
       where.status = In(statusFilterValues);
+    }
+
+    const startDiagnosisDateFilterValue = diagnosisDateFilter[0];
+    const endDiagnosisDateFilterValue = diagnosisDateFilter[1];
+
+    if (startDiagnosisDateFilterValue && !endDiagnosisDateFilterValue) {
+      where.diagnosisDate = MoreThanOrEqual(startDiagnosisDateFilterValue);
+    } else if (!startDiagnosisDateFilterValue && endDiagnosisDateFilterValue) {
+      where.diagnosisDate = LessThanOrEqual(startDiagnosisDateFilterValue);
+    } else if (startDiagnosisDateFilterValue && endDiagnosisDateFilterValue) {
+      where.diagnosisDate = Between(startDiagnosisDateFilterValue, endDiagnosisDateFilterValue);
     }
 
     const pagedResult = await this.repository.findAndCount({
